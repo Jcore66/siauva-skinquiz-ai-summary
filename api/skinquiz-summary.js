@@ -9,15 +9,18 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Updated prompt to match your quiz fields!
   const prompt = `
-You are a luxury skincare advisor named "Siauva AI". Write a short, empathetic summary for a customer based on their answers below. Reference their skin type, concerns, texture preference, routine time, and goals. Be positive, supportive, and professional—like a real high-end consultant. Example: "Your main concerns are redness and dark spots, and you prefer gel textures for your morning routine. Products that soothe and brighten, with lightweight hydration, will be perfect for your skin."
+You are a luxury skincare advisor named "Siauva AI". Write a short, empathetic summary for a customer based on their answers below. Reference their skin type, concerns, texture preference, routine time, and goals. Be positive, supportive, and professional—like a real high-end consultant.
 
-Answers (raw, comma-separated):
-Skin type: ${answers.q1.join(", ")}
-Concerns: ${answers.q2.join(", ")}
-Routine time: ${answers.q3.join(", ")}
-Texture: ${answers.q4.join(", ")}
-Goals: ${answers.q5.join(", ")}
+Answers:
+Skin type: ${answers.skin_type?.join(", ") || "N/A"}
+Concerns: ${answers.concern?.join(", ") || "N/A"}
+Routine steps: ${answers.routine_step?.join(", ") || "N/A"}
+Preferred ingredients: ${answers.ingredient?.join(", ") || "N/A"}
+Texture: ${answers.texture?.join(", ") || "N/A"}
+Routine time: ${answers.routine_time?.join(", ") || "N/A"}
+Features: ${answers.features?.join(", ") || "N/A"}
 
 Summary:
 `;
