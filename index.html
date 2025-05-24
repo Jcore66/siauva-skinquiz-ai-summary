@@ -268,7 +268,8 @@ function generateRoutine() {
         html+=`<div style="color:#b0453e;font-size:1.09em;font-weight:500;margin-bottom:30px;">No matches found. Please try adjusting your answers for more results.</div>`;
       }
       // ----- AI SUMMARY -----
-      fetch('https://siauva-skinquiz-ai-summary-sm9j.vercel.app/api/skinquiz-summary', {
+      fetch('/api/ai-summary', {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers: selectedAnswers })
