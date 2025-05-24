@@ -1,0 +1,301 @@
+<!-- SIAUVA HYBRID SKINCARE QUIZ -->
+<section
+  id="ai-quiz"
+  style="max-width:720px;margin:auto;padding:60px 0 80px 0;font-family:'Poppins','Helvetica Neue',sans-serif;"
+>
+  <div
+    id="quiz-progress"
+    style="text-align:center;font-size:1.08em;color:#b5aa9b;font-weight:500;letter-spacing:1px;"
+  ></div>
+  <div style="text-align:center;">
+    <img
+      src="https://cdn.shopify.com/s/files/1/your-store-logo.png"
+      alt="Siauva Logo"
+      style="max-width:120px;margin:0 auto 22px;display:block;"
+    >
+  </div>
+  <h1 style="font-size:2.2em;text-align:center;margin-bottom:36px;font-weight:700;letter-spacing:0.01em;">
+    Let’s build your personalized skincare ritual
+  </h1>
+  <form
+    id="aiQuizForm"
+    onsubmit="event.preventDefault();generateRoutine();"
+    style="display:flex;flex-direction:column;gap:38px;"
+  >
+    <!-- Q1: Skin Type -->
+    <div>
+      <label class="quiz-label"><span class="quiz-step">1.</span> What’s your skin type?</label>
+      <div class="btn-group" data-question="skin_type">
+        <button type="button">Dry Skin</button>
+        <button type="button">Oily Skin</button>
+        <button type="button">Combination Skin</button>
+        <button type="button">Sensitive Skin</button>
+        <button type="button">Normal Skin</button>
+      </div>
+    </div>
+    <!-- Q2: Skin Concerns -->
+    <div>
+      <label class="quiz-label"
+        ><span class="quiz-step">2.</span> Which concerns do you want to address?
+        <span class="quiz-hint">(Select all that apply)</span></label
+      >
+      <div class="btn-group" data-question="concern">
+        <button type="button">Acne</button>
+        <button type="button">Dullness</button>
+        <button type="button">Dryness</button>
+        <button type="button">Dark Spots</button>
+        <button type="button">Hyperpigmentation</button>
+        <button type="button">Texture</button>
+        <button type="button">Puffiness</button>
+        <button type="button">Redness</button>
+        <button type="button">Inflammation</button>
+        <button type="button">Clogged Pores</button>
+        <button type="button">Fine Lines</button>
+        <button type="button">Uneven Tone</button>
+      </div>
+    </div>
+    <!-- Q3: Routine Steps -->
+    <div>
+      <label class="quiz-label"><span class="quiz-step">3.</span> Which steps interest you most?</label>
+      <div class="btn-group" data-question="routine_step">
+        <button type="button">Cleanse</button>
+        <button type="button">Exfoliate</button>
+        <button type="button">Tone</button>
+        <button type="button">Treat</button>
+        <button type="button">Hydrate</button>
+        <button type="button">Moisturize</button>
+        <button type="button">Soothe</button>
+        <button type="button">Balance</button>
+        <button type="button">Protect</button>
+        <button type="button">Mask</button>
+        <button type="button">Replenish</button>
+        <button type="button">Glow Boost</button>
+        <button type="button">Clarify</button>
+        <button type="button">Prime</button>
+      </div>
+    </div>
+    <!-- Q4: Ingredient Preferences -->
+    <div>
+      <label class="quiz-label"><span class="quiz-step">4.</span> Do you prefer any ingredients?</label>
+      <div class="btn-group" data-question="ingredient">
+        <button type="button">Niacinamide</button>
+        <button type="button">Vitamin C</button>
+        <button type="button">Hyaluronic Acid</button>
+        <button type="button">Retinol</button>
+        <button type="button">Peptides</button>
+        <button type="button">Cucumber Extract</button>
+        <button type="button">Aloe Vera</button>
+        <button type="button">Ceramides</button>
+        <button type="button">Zinc Oxide</button>
+        <button type="button">Salicylic Acid</button>
+        <button type="button">Glycolic Acid</button>
+        <button type="button">Green Tea</button>
+      </div>
+    </div>
+    <!-- Q5: Product Texture / Format -->
+    <div>
+      <label class="quiz-label"><span class="quiz-step">5.</span> What texture or format do you prefer?</label>
+      <div class="btn-group" data-question="texture">
+        <button type="button">Gel</button>
+        <button type="button">Cream</button>
+        <button type="button">Oil</button>
+        <button type="button">Serum</button>
+        <button type="button">Mist</button>
+        <button type="button">Foam</button>
+        <button type="button">Balm</button>
+        <button type="button">Lotion</button>
+        <button type="button">Essence</button>
+        <button type="button">Dropper</button>
+        <button type="button">Tube</button>
+        <button type="button">Pump</button>
+      </div>
+    </div>
+    <!-- Q6: Time of Use -->
+    <div>
+      <label class="quiz-label"><span class="quiz-step">6.</span> When do you want to use your skincare?</label>
+      <div class="btn-group" data-question="routine_time">
+        <button type="button">AM Routine</button>
+        <button type="button">PM Routine</button>
+        <button type="button">All Day</button>
+      </div>
+    </div>
+    <!-- Q7: Features / Positioning -->
+    <div>
+      <label class="quiz-label"><span class="quiz-step">7.</span> Are any of these features important to you?</label>
+      <div class="btn-group" data-question="features">
+        <button type="button">Vegan</button>
+        <button type="button">Fragrance-Free</button>
+        <button type="button">Sensitive Skin Approved</button>
+        <button type="button">Best Seller</button>
+        <button type="button">Limited Edition</button>
+        <button type="button">Dermatologist-Tested</button>
+        <button type="button">Non-Comedogenic</button>
+        <button type="button">Clinically Proven</button>
+        <button type="button">New Arrival</button>
+      </div>
+    </div>
+    <button
+      type="submit"
+      id="buildRitualBtn"
+      style="margin-top:40px;padding:16px 0;font-size:1.15em;background:#ede9e2;font-weight:600;border:none;cursor:pointer;border-radius:2em;box-shadow:0 2px 16px #e7dfd699;transition:all 0.18s;color:#222;"
+    >
+      <span id="btnText">Build My Ritual &rarr;</span>
+      <span id="btnLoader" style="display:none;margin-left:10px;vertical-align:middle;">
+        <svg width="18" height="18" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="none" stroke="#b5aa9b" stroke-width="6" stroke-linecap="round" stroke-dasharray="31.415, 31.415" transform="rotate(258.299 25 25)"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/></circle>
+        </svg>
+      </span>
+    </button>
+  </form>
+  <div id="aiRoutineOutput" style="margin-top:50px;"></div>
+</section>
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  html,body { background: #f7f6f3 !important; }
+  .quiz-label { font-size: 1.08em; font-weight: 600; color: #222; margin-bottom: 6px; display: block; letter-spacing: .01em;}
+  .quiz-step { color: #b5aa9b; margin-right: 6px; font-weight: bold; }
+  .quiz-hint { color: #9b9486; font-weight: 400; font-size: 0.95em; margin-left: 4px;}
+  .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; margin-bottom: 8px;}
+  .btn-group button { padding: 12px 20px; border: none; border-radius: 2em; background: #f1eee7; color: #222; font-weight: 500; font-size: 1.06em; box-shadow: 0 2px 10px #f1eee799; margin-bottom: 4px; cursor: pointer; transition: background 0.21s, color 0.21s, transform 0.18s, box-shadow 0.18s; position:relative; outline: none; z-index:1;}
+  .btn-group button.selected { background: #ede9e2; color: #222; box-shadow: 0 4px 14px #beb2a666; font-weight: 600; transform: scale(1.06);}
+  .btn-group button.selected svg { display:inline-block !important;}
+  .btn-group button svg { display:none; position:absolute; right:16px;top:50%; transform:translateY(-50%); width:19px; height:19px; fill:none; stroke:#b5aa9b; stroke-width:2.5px; stroke-linecap:round; stroke-linejoin:round;}
+  #aiRoutineOutput h2 { font-size:1.34em; text-align:center; font-weight:600; color:#b5aa9b; margin-bottom:16px;}
+  #aiRoutineOutput { margin-top:50px;}
+  @media (max-width:650px) { #ai-quiz { padding: 12px 2vw 22px 2vw; font-size: 0.98em; } .btn-group { gap: 6px;} .btn-group button { padding:10px 13px; font-size:0.98em;} }
+</style>
+<script>
+const selectedAnswers = {
+  skin_type: [], concern: [], routine_step: [], ingredient: [],
+  texture: [], routine_time: [], features: []
+};
+
+// Setup buttons & SVGs
+document.querySelectorAll('.btn-group button').forEach(btn => {
+  btn.innerHTML += `<svg viewBox="0 0 20 20"><polyline points="4 11 8 15 16 6"/></svg>`;
+  btn.addEventListener('click', function () {
+    const group = this.closest('.btn-group');
+    const qid = group.dataset.question;
+    this.classList.toggle('selected');
+    const value = this.textContent.trim();
+    if (this.classList.contains('selected')) {
+      if (!selectedAnswers[qid].includes(value)) {
+        selectedAnswers[qid].push(value);
+        this.querySelector('svg').style.display = "inline-block";
+        this.animate([{transform:"scale(1.12)"},{transform:"scale(1.01)"},{transform:"scale(1.06)"}], {duration:150});
+      }
+    } else {
+      selectedAnswers[qid] = selectedAnswers[qid].filter(v => v !== value);
+      this.querySelector('svg').style.display = "none";
+    }
+    updateProgress();
+  });
+});
+
+function updateProgress() {
+  // "x of 7 answered"
+  let answered = 0;
+  Object.values(selectedAnswers).forEach(arr => { if (arr.length) answered++; });
+  document.getElementById('quiz-progress').innerHTML =
+    `<span style="font-weight:700;color:#b5aa9b;font-size:1.15em;">${answered} of 7</span> answered`;
+}
+updateProgress();
+
+// MAIN PRODUCT MATCHING
+function matchesAny(arr, metaArr) {
+  if (!Array.isArray(metaArr)) return false;
+  return arr.some(a => metaArr.map(m => m.toLowerCase()).includes(a.toLowerCase()));
+}
+function capitalize(str) { if (!str) return ""; return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase(); }
+
+// Main submit
+function generateRoutine() {
+  // Require all 7 questions
+  const required = Object.keys(selectedAnswers);
+  if (!required.every(q => selectedAnswers[q] && selectedAnswers[q].length > 0)) {
+    alert('Please answer all questions.');
+    return;
+  }
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('btnLoader').style.display='inline-block';
+  const output = document.getElementById('aiRoutineOutput');
+  output.innerHTML = `<h2>Building your ritual...</h2>`;
+
+  // --- PRODUCT MATCHING ---
+  fetch('/collections/all/products.json?limit=250').then(res=>res.json()).then(data=>{
+    setTimeout(()=>{
+      const products = data.products;
+      let best = [];
+      products.forEach(prod=>{
+        function meta(field) {
+          if(prod.metafields && prod.metafields.custom && prod.metafields.custom[field]){
+            let m = prod.metafields.custom[field];
+            if(typeof m==="string")return m.split(',').map(s=>s.trim());
+            if(Array.isArray(m))return m;
+          }
+          if(prod.tags)return prod.tags;
+          return [];
+        }
+        let match = 0;
+        if(matchesAny(selectedAnswers.skin_type, meta('skin_type'))) match++;
+        if(matchesAny(selectedAnswers.concern, meta('concern'))) match++;
+        if(matchesAny(selectedAnswers.routine_step, meta('routine_step'))) match++;
+        if(matchesAny(selectedAnswers.ingredient, meta('key_ingredients'))) match++;
+        if(matchesAny(selectedAnswers.texture, meta('texture'))) match++;
+        if(matchesAny(selectedAnswers.routine_time, meta('routine_time'))) match++;
+        if(matchesAny(selectedAnswers.features, meta('features'))) match++;
+        if(match>0)best.push({...prod, match});
+      });
+      best.sort((a,b)=>b.match-a.match);
+      let html = '';
+      if(best.length){
+        html+=`<div style="margin-bottom:32px;"><strong>${best.length}</strong> products matched your preferences:</div>`;
+        best.slice(0,12).forEach(p=>{
+          const img = p.images[0]?.src || 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-image.png';
+          const vid = p.variants[0].id;
+          html+=`
+          <div style="display:flex;gap:22px;align-items:center;margin-bottom:18px;background:#f7f6f3;border-radius:13px;padding:14px 16px 14px 0;box-shadow:0 2px 12px #e7dfd633;">
+            <img src="${img}" alt="${p.title}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;background:#f1eee7;margin-left:12px;">
+            <div>
+              <div style="font-weight:700;font-size:1.08em;color:#222;">${p.title}</div>
+              <div style="color:#b5aa9b;font-size:1em;font-weight:500;">$${(p.variants[0].price/1).toFixed(2)}</div>
+              <div style="font-size:0.96em;color:#999;margin:3px 0 4px 0;">Matched: <span style="font-weight:700;color:#b5aa9b;">${p.match}/7</span></div>
+              <button onclick="addToRitual(${vid})" style="margin-top:3px;padding:7px 22px;background:#ede9e2;color:#222;border:none;cursor:pointer;border-radius:2em;font-weight:600;box-shadow:0 2px 10px #ede9e2;">Add to Ritual</button>
+            </div>
+          </div>`;
+        });
+      } else {
+        html+=`<div style="color:#b0453e;font-size:1.09em;font-weight:500;margin-bottom:30px;">No matches found. Please try adjusting your answers for more results.</div>`;
+      }
+      // ----- AI SUMMARY -----
+      fetch('https://siauva-skinquiz-ai-summary-sm9j.vercel.app/api/skinquiz-summary', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: selectedAnswers })
+      }).then(r=>r.json()).then(ai=>{
+        if(ai.summary){
+          html = `<div style="background:#fffbe7;padding:20px 28px;border-radius:14px;margin-bottom:36px;font-size:1.15em;line-height:1.65;color:#695a42;font-weight:500;text-align:center;box-shadow:0 2px 14px #ffe7b788;">
+            <span style="color:#b5aa9b;font-weight:700;font-size:1.12em;display:block;margin-bottom:4px;">Your Personalized Ritual Summary</span>
+            ${ai.summary}
+          </div>`+html;
+        } else {
+          html = `<div style="color:#b0453e;font-weight:600;font-size:1.15em;margin-bottom:36px;">AI summary currently unavailable.</div>` + html;
+        }
+        output.innerHTML = html;
+        document.getElementById('btnText').style.display='inline-block';
+        document.getElementById('btnLoader').style.display='none';
+      }).catch(()=>{
+        html = `<div style="color:#b0453e;font-weight:600;font-size:1.15em;margin-bottom:36px;">AI summary currently unavailable.</div>` + html;
+        output.innerHTML = html;
+        document.getElementById('btnText').style.display='inline-block';
+        document.getElementById('btnLoader').style.display='none';
+      });
+    },700);
+  });
+}
+
+// Dummy add to cart (replace with Shopify AJAX or your function)
+function addToRitual(variantId) {
+  alert("Added variant ID " + variantId + " to ritual. Replace this alert with your actual add-to-cart functionality.");
+}
+</script>
