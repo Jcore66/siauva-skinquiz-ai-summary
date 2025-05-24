@@ -271,7 +271,7 @@ function generateRoutine() {
         }
         // ----- AI SUMMARY -----
        fetch('https://siauva-skinquiz-ai-summary2.pages.dev/api/skinquiz-summary', {
-  method: "POST",
+  method: 'POST',
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ answers: selectedAnswers })
 })
