@@ -268,7 +268,7 @@ function generateRoutine() {
         html+=`<div style="color:#b0453e;font-size:1.09em;font-weight:500;margin-bottom:30px;">No matches found. Please try adjusting your answers for more results.</div>`;
       }
       // ----- AI SUMMARY -----
-      fetch('/api/ai-summary', {
+      fetch('https://1e22b09a.siauva-skinquiz-ai-summary2.pages.dev/api/ai-summary', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers: selectedAnswers })
