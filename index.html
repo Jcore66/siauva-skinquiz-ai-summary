@@ -222,76 +222,82 @@ function generateRoutine() {
   output.innerHTML = `<h2>Building your ritual...</h2>`;
 
   // --- PRODUCT MATCHING ---
-  fetch('/collections/all/products.json?limit=250').then(res=>res.json()).then(data=>{
-    setTimeout(()=>{
-      const products = data.products;
-      let best = [];
-      products.forEach(prod=>{
-        function meta(field) {
-          if(prod.metafields && prod.metafields.custom && prod.metafields.custom[field]){
-            let m = prod.metafields.custom[field];
-            if(typeof m==="string")return m.split(',').map(s=>s.trim());
-            if(Array.isArray(m))return m;
+  fetch('/collections/all/products.json?limit=250')
+    .then(res=>res.json())
+    .then(data=>{
+      setTimeout(()=>{
+        const products = data.products;
+        let best = [];
+        products.forEach(prod=>{
+          function meta(field) {
+            if(prod.metafields && prod.metafields.custom && prod.metafields.custom[field]){
+              let m = prod.metafields.custom[field];
+              if(typeof m==="string")return m.split(',').map(s=>s.trim());
+              if(Array.isArray(m))return m;
+            }
+            if(prod.tags)return prod.tags;
+            return [];
           }
-          if(prod.tags)return prod.tags;
-          return [];
-        }
-        let match = 0;
-        if(matchesAny(selectedAnswers.skin_type, meta('skin_type'))) match++;
-        if(matchesAny(selectedAnswers.concern, meta('concern'))) match++;
-        if(matchesAny(selectedAnswers.routine_step, meta('routine_step'))) match++;
-        if(matchesAny(selectedAnswers.ingredient, meta('key_ingredients'))) match++;
-        if(matchesAny(selectedAnswers.texture, meta('texture'))) match++;
-        if(matchesAny(selectedAnswers.routine_time, meta('routine_time'))) match++;
-        if(matchesAny(selectedAnswers.features, meta('features'))) match++;
-        if(match>0)best.push({...prod, match});
-      });
-      best.sort((a,b)=>b.match-a.match);
-      let html = '';
-      if(best.length){
-        html+=`<div style="margin-bottom:32px;"><strong>${best.length}</strong> products matched your preferences:</div>`;
-        best.slice(0,12).forEach(p=>{
-          const img = p.images[0]?.src || 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-image.png';
-          const vid = p.variants[0].id;
-          html+=`
-          <div style="display:flex;gap:22px;align-items:center;margin-bottom:18px;background:#f7f6f3;border-radius:13px;padding:14px 16px 14px 0;box-shadow:0 2px 12px #e7dfd633;">
-            <img src="${img}" alt="${p.title}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;background:#f1eee7;margin-left:12px;">
-            <div>
-              <div style="font-weight:700;font-size:1.08em;color:#222;">${p.title}</div>
-              <div style="color:#b5aa9b;font-size:1em;font-weight:500;">$${(p.variants[0].price/1).toFixed(2)}</div>
-              <div style="font-size:0.96em;color:#999;margin:3px 0 4px 0;">Matched: <span style="font-weight:700;color:#b5aa9b;">${p.match}/7</span></div>
-              <button onclick="addToRitual(${vid})" style="margin-top:3px;padding:7px 22px;background:#ede9e2;color:#222;border:none;cursor:pointer;border-radius:2em;font-weight:600;box-shadow:0 2px 10px #ede9e2;">Add to Ritual</button>
-            </div>
-          </div>`;
+          let match = 0;
+          if(matchesAny(selectedAnswers.skin_type, meta('skin_type'))) match++;
+          if(matchesAny(selectedAnswers.concern, meta('concern'))) match++;
+          if(matchesAny(selectedAnswers.routine_step, meta('routine_step'))) match++;
+          if(matchesAny(selectedAnswers.ingredient, meta('key_ingredients'))) match++;
+          if(matchesAny(selectedAnswers.texture, meta('texture'))) match++;
+          if(matchesAny(selectedAnswers.routine_time, meta('routine_time'))) match++;
+          if(matchesAny(selectedAnswers.features, meta('features'))) match++;
+          if(match>0)best.push({...prod, match});
         });
-      } else {
-        html+=`<div style="color:#b0453e;font-size:1.09em;font-weight:500;margin-bottom:30px;">No matches found. Please try adjusting your answers for more results.</div>`;
-      }
-      // ----- AI SUMMARY -----
-      fetch('https://1e22b09a.siauva-skinquiz-ai-summary2.pages.dev/api/ai-summary', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers: selectedAnswers })
-      }).then(r=>r.json()).then(ai=>{
-        if(ai.summary){
-          html = `<div style="background:#fffbe7;padding:20px 28px;border-radius:14px;margin-bottom:36px;font-size:1.15em;line-height:1.65;color:#695a42;font-weight:500;text-align:center;box-shadow:0 2px 14px #ffe7b788;">
-            <span style="color:#b5aa9b;font-weight:700;font-size:1.12em;display:block;margin-bottom:4px;">Your Personalized Ritual Summary</span>
-            ${ai.summary}
-          </div>`+html;
+        best.sort((a,b)=>b.match-a.match);
+        let html = '';
+        if(best.length){
+          html+=`<div style="margin-bottom:32px;"><strong>${best.length}</strong> products matched your preferences:</div>`;
+          best.slice(0,12).forEach(p=>{
+            const img = p.images[0]?.src || 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-image.png';
+            const vid = p.variants[0].id;
+            html+=`
+            <div style="display:flex;gap:22px;align-items:center;margin-bottom:18px;background:#f7f6f3;border-radius:13px;padding:14px 16px 14px 0;box-shadow:0 2px 12px #e7dfd633;">
+              <img src="${img}" alt="${p.title}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;background:#f1eee7;margin-left:12px;">
+              <div>
+                <div style="font-weight:700;font-size:1.08em;color:#222;">${p.title}</div>
+                <div style="color:#b5aa9b;font-size:1em;font-weight:500;">$${(p.variants[0].price/1).toFixed(2)}</div>
+                <div style="font-size:0.96em;color:#999;margin:3px 0 4px 0;">Matched: <span style="font-weight:700;color:#b5aa9b;">${p.match}/7</span></div>
+                <button onclick="addToRitual(${vid})" style="margin-top:3px;padding:7px 22px;background:#ede9e2;color:#222;border:none;cursor:pointer;border-radius:2em;font-weight:600;box-shadow:0 2px 10px #ede9e2;">Add to Ritual</button>
+              </div>
+            </div>`;
+          });
         } else {
-          html = `<div style="color:#b0453e;font-weight:600;font-size:1.15em;margin-bottom:36px;">AI summary currently unavailable.</div>` + html;
+          html+=`<div style="color:#b0453e;font-size:1.09em;font-weight:500;margin-bottom:30px;">No matches found. Please try adjusting your answers for more results.</div>`;
         }
-        output.innerHTML = html;
-        document.getElementById('btnText').style.display='inline-block';
-        document.getElementById('btnLoader').style.display='none';
-      }).catch(()=>{
-        html = `<div style="color:#b0453e;font-weight:600;font-size:1.15em;margin-bottom:36px;">AI summary currently unavailable.</div>` + html;
-        output.innerHTML = html;
-        document.getElementById('btnText').style.display='inline-block';
-        document.getElementById('btnLoader').style.display='none';
-      });
-    },700);
-  });
+        // ----- AI SUMMARY -----
+       fetch('https://e5bf0c46.siauva-skinquiz-ai-summary2.pages.dev/ai-summary', {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ answers: selectedAnswers })
+})
+
+        .then(r => r.json())
+        .then(ai => {
+          if (ai.summary) {
+            html = `<div style="background:#fffbe7;padding:20px 28px;border-radius:14px;margin-bottom:36px;font-size:1.15em;line-height:1.65;color:#695a42;font-weight:500;text-align:center;box-shadow:0 2px 14px #ffe7b788;">
+              <span style="color:#b5aa9b;font-weight:700;font-size:1.12em;display:block;margin-bottom:4px;">Your Personalized Ritual Summary</span>
+              ${ai.summary}
+            </div>` + html;
+          } else {
+            html = `<div style="color:#b0453e;font-weight:600;font-size:1.15em;margin-bottom:36px;">AI summary currently unavailable.</div>` + html;
+          }
+          output.innerHTML = html;
+          document.getElementById('btnText').style.display = 'inline-block';
+          document.getElementById('btnLoader').style.display = 'none';
+        })
+        .catch(() => {
+          html = `<div style="color:#b0453e;font-weight:600;font-size:1.15em;margin-bottom:36px;">AI summary currently unavailable.</div>` + html;
+          output.innerHTML = html;
+          document.getElementById('btnText').style.display = 'inline-block';
+          document.getElementById('btnLoader').style.display = 'none';
+        });
+      },700);
+    });
 }
 
 // Dummy add to cart (replace with Shopify AJAX or your function)
