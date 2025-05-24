@@ -1,22 +1,21 @@
 export default async function handler(req, res) {
-  // Set common CORS headers for all responses
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Change "*" to your domain for production
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Replace * with domain for prod
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // Handle CORS preflight request
+  // Handle preflight
   if (req.method === "OPTIONS") {
-    res.status(204).end(); // No content for preflight
+    res.status(204).end();
     return;
   }
 
-  // Only allow POST method
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
     return;
   }
 
-  const { answers } = req.body;
+  const { answers } = req.body || {};
   if (!answers) {
     res.status(400).json({ error: "Missing answers" });
     return;
@@ -39,31 +38,35 @@ Summary:
 
   const openaiKey = process.env.OPENAI_API_KEY;
   if (!openaiKey) {
-    res.status(500).json({ error: "Missing OpenAI key" });
+    res.status(500).json({ error: "Missing OpenAI API key" });
     return;
   }
 
-  const apiRes = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${openaiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-4o",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 120,
-      temperature: 0.8,
-    }),
-  });
+  try {
+    const apiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${openaiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 120,
+        temperature: 0.8,
+      }),
+    });
 
-  const data = await apiRes.json();
+    const data = await apiRes.json();
 
-  if (!data.choices || data.choices.length === 0) {
-    res.status(500).json({ error: "No response from OpenAI", details: data });
-    return;
+    if (!data.choices || data.choices.length === 0) {
+      res.status(500).json({ error: "No response from OpenAI", details: data });
+      return;
+    }
+
+    const summary = data.choices[0].message.content.trim();
+    res.status(200).json({ summary });
+  } catch (err) {
+    res.status(500).json({ error: "OpenAI request failed", details: err.message });
   }
-
-  const summary = data.choices[0].message.content.trim();
-  res.status(200).json({ summary });
 }
