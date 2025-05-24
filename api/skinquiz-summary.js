@@ -1,12 +1,12 @@
 export default async function handler(req, res) {
-  // CORS headers - adjust "*" to your domain if needed for production
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // Set common CORS headers for all responses
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Change "*" to your domain for production
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // Handle CORS preflight requests
+  // Handle CORS preflight request
   if (req.method === "OPTIONS") {
-    res.status(200).end();
+    res.status(204).end(); // No content for preflight
     return;
   }
 
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Updated prompt to match your quiz fields!
   const prompt = `
 You are a luxury skincare advisor named "Siauva AI". Write a short, empathetic summary for a customer based on their answers below. Reference their skin type, concerns, texture preference, routine time, and goals. Be positive, supportive, and professional—like a real high-end consultant.
 
@@ -44,11 +43,10 @@ Summary:
     return;
   }
 
-  // Call OpenAI
   const apiRes = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${openaiKey}`,
+      "Authorization": `Bearer ${openaiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -60,7 +58,8 @@ Summary:
   });
 
   const data = await apiRes.json();
-  if (!data.choices) {
+
+  if (!data.choices || data.choices.length === 0) {
     res.status(500).json({ error: "No response from OpenAI", details: data });
     return;
   }
