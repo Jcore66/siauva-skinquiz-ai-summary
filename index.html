@@ -269,7 +269,6 @@ function generateRoutine() {
       }
       // ----- AI SUMMARY -----
       fetch('/api/ai-summary', {
-
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers: selectedAnswers })
